@@ -150,6 +150,13 @@ def fetch_current(prev, puuid):
             current["card_id"] = card.get("id")
             current["card_url"] = card.get("small")
             current["card_image"] = card.get("wide") or card.get("large")
+            ts = acc.get("last_update_raw")
+            if ts:
+                current["card_updated_at"] = (
+                    datetime.fromtimestamp(ts, timezone.utc)
+                    .isoformat(timespec="seconds")
+                    .replace("+00:00", "Z")
+                )
             region = current.get("shard") or acc.get("region") or "na"
             mmr = henrik_get(f"v2/by-puuid/mmr/{region}/{hp}")
             if mmr:

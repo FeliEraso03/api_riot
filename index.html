@@ -569,7 +569,7 @@
         ${s.card_image ? `
         <div class="playercard${s.card_changed_at && s.card_changed_at === s.checked_at ? " changed" : ""}">
           <img src="${esc(s.card_image)}" alt="Player card" onerror="this.parentNode.remove()">
-          <span class="pc-label">Tarjeta actual</span>
+          <span class="pc-label">Tarjeta actual${s.card_updated_at ? " · datos de " + esc(relTime(s.card_updated_at)) : ""}</span>
           ${s.card_changed_at && s.card_changed_at === s.checked_at ? '<span class="pc-new">Cambiada</span>' : ""}
         </div>` : ""}
         <div class="grid">
