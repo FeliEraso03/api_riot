@@ -1,0 +1,46 @@
+name: Riot Watcher
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: riot-watcher
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Comprobar cuenta de Riot
+        env:
+          RIOT_API_KEY: ${{ secrets.RIOT_API_KEY }}
+          RIOT_PUUID: ${{ secrets.RIOT_PUUID }}
+          HENRIK_PUUID: ${{ secrets.HENRIK_PUUID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          HENRIK_API_KEY: ${{ secrets.HENRIK_API_KEY }}
+          RIOT_REGION: ${{ vars.RIOT_REGION }}
+        run: python check.py
+
+      - name: Guardar nuevo estado
+        run: |
+          git config user.name "riot-watcher[bot]"
+          git config user.email "riot-watcher[bot]@users.noreply.github.com"
+          git add state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update watcher state"
+            git push
+          fi
