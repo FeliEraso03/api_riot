@@ -1,6 +1,6 @@
 {
   "shard": "latam",
-  "checked_at": "2026-09-12T21:50:52Z",
+  "checked_at": "2026-09-12T21:52:06Z",
   "riot_id": "wons#UwU",
   "account_level": 35,
   "card_id": "d010298a-48e7-5eb9-528e-569c44644084",
@@ -20,5 +20,6 @@
   "last_match_agent_id": "117ed9e3-49f3-6512-3ccf-0cada7e3823b",
   "last_match_kda": "19/17/8",
   "last_match_score": "13-11",
-  "last_match_result": "win"
+  "last_match_result": "win",
+  "card_changed_at": "2026-09-12T21:52:06Z"
 }
