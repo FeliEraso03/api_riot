@@ -33,7 +33,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           HENRIK_API_KEY: ${{ secrets.HENRIK_API_KEY }}
           RIOT_REGION: ${{ vars.RIOT_REGION }}
-        run: python check.py
+        run: python check.py --once
 
       - name: Guardar nuevo estado
         run: |
