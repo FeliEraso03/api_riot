@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import time
 import urllib.parse
 from datetime import datetime, timezone
 
@@ -9,6 +10,7 @@ import requests
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 STATE_FILE = "state.json"
+CHECK_INTERVAL = 15 * 60  # 15 minutos
 
 
 def load_dotenv():
@@ -231,7 +233,7 @@ def load_state():
         return {}
 
 
-def main():
+def run_check():
     if not RIOT_API_KEY and not HENRIK_KEY:
         print("Falta RIOT_API_KEY o HENRIK_API_KEY")
         sys.exit(1)
@@ -312,6 +314,20 @@ def main():
         f.write("\n")
 
     print("\n".join(changes) if changes else "Sin cambios")
+
+
+def main():
+    if "--once" in sys.argv:
+        run_check()
+        return
+    while True:
+        print(f"\n[{datetime.now():%Y-%m-%d %H:%M:%S}] Verificando...")
+        try:
+            run_check()
+        except Exception as e:
+            print(f"Error en la verificacion: {e}")
+        print("Proxima verificacion en 15 minutos (Ctrl+C para salir)")
+        time.sleep(CHECK_INTERVAL)
 
 
 if __name__ == "__main__":
